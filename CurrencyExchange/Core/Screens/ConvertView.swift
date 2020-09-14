@@ -1,5 +1,5 @@
 //
-//  ViewController.swift
+//  ConvertView.swift
 //  CurrencyExchange
 //
 //  Created by Aldair Raul Cosetito Coral on 9/14/20.
@@ -8,13 +8,12 @@
 
 import UIKit
 
-class ViewController: UIViewController {
+class ConvertView: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+
         // Do any additional setup after loading the view.
     }
 
-
 }
-
