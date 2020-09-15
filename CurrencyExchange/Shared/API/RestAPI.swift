@@ -32,6 +32,7 @@ extension RestAPI{
                                   completion: @escaping((responseAPI<T>)-> Void)){
         
         guard let serviceUrl = URL(string: url) else { return }
+        
         var request = URLRequest(url: serviceUrl)
         request.addValue("Application/json", forHTTPHeaderField: "Content-Type")
         request.httpMethod = verb
@@ -57,7 +58,7 @@ extension RestAPI{
                 }
             }
             
-        }
+        }.resume()
         
         
     }
