@@ -13,6 +13,13 @@
 		522D85AF250FC81600774FC2 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 522D85AD250FC81600774FC2 /* LaunchScreen.storyboard */; };
 		522D85BD250FC8CB00774FC2 /* ConvertView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 522D85BB250FC8CB00774FC2 /* ConvertView.swift */; };
 		522D85BE250FC8CB00774FC2 /* ConvertView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 522D85BC250FC8CB00774FC2 /* ConvertView.xib */; };
+		5265A394250FCEFB009BB8E9 /* Coordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5265A393250FCEFB009BB8E9 /* Coordinator.swift */; };
+		5265A397250FCF32009BB8E9 /* AppCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5265A396250FCF32009BB8E9 /* AppCoordinator.swift */; };
+		5265A39A250FD064009BB8E9 /* ConvertCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5265A399250FD064009BB8E9 /* ConvertCoordinator.swift */; };
+		5265A39D250FD440009BB8E9 /* Router.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5265A39C250FD440009BB8E9 /* Router.swift */; };
+		5265A39F250FD44B009BB8E9 /* Showable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5265A39E250FD44B009BB8E9 /* Showable.swift */; };
+		5265A3A1250FD625009BB8E9 /* AppRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5265A3A0250FD625009BB8E9 /* AppRouter.swift */; };
+		52E01F792510752B00298434 /* RestAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52E01F782510752B00298434 /* RestAPI.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -24,6 +31,13 @@
 		522D85B0250FC81600774FC2 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		522D85BB250FC8CB00774FC2 /* ConvertView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConvertView.swift; sourceTree = "<group>"; };
 		522D85BC250FC8CB00774FC2 /* ConvertView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ConvertView.xib; sourceTree = "<group>"; };
+		5265A393250FCEFB009BB8E9 /* Coordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Coordinator.swift; sourceTree = "<group>"; };
+		5265A396250FCF32009BB8E9 /* AppCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppCoordinator.swift; sourceTree = "<group>"; };
+		5265A399250FD064009BB8E9 /* ConvertCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConvertCoordinator.swift; sourceTree = "<group>"; };
+		5265A39C250FD440009BB8E9 /* Router.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Router.swift; sourceTree = "<group>"; };
+		5265A39E250FD44B009BB8E9 /* Showable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Showable.swift; sourceTree = "<group>"; };
+		5265A3A0250FD625009BB8E9 /* AppRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppRouter.swift; sourceTree = "<group>"; };
+		52E01F782510752B00298434 /* RestAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RestAPI.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -70,6 +84,7 @@
 		522D85B6250FC86200774FC2 /* Shared */ = {
 			isa = PBXGroup;
 			children = (
+				52E01F772510751000298434 /* API */,
 			);
 			path = Shared;
 			sourceTree = "<group>";
@@ -77,23 +92,19 @@
 		522D85B7250FC86500774FC2 /* Core */ = {
 			isa = PBXGroup;
 			children = (
+				5265A39B250FD3F7009BB8E9 /* Router */,
 				522D85BA250FC88C00774FC2 /* Screens */,
 				522D85B9250FC88400774FC2 /* Coordinator */,
-				522D85B8250FC88100774FC2 /* Router */,
 			);
 			path = Core;
-			sourceTree = "<group>";
-		};
-		522D85B8250FC88100774FC2 /* Router */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = Router;
 			sourceTree = "<group>";
 		};
 		522D85B9250FC88400774FC2 /* Coordinator */ = {
 			isa = PBXGroup;
 			children = (
+				5265A393250FCEFB009BB8E9 /* Coordinator.swift */,
+				5265A396250FCF32009BB8E9 /* AppCoordinator.swift */,
+				5265A399250FD064009BB8E9 /* ConvertCoordinator.swift */,
 			);
 			path = Coordinator;
 			sourceTree = "<group>";
@@ -101,10 +112,52 @@
 		522D85BA250FC88C00774FC2 /* Screens */ = {
 			isa = PBXGroup;
 			children = (
+				5265A390250FCE67009BB8E9 /* Model */,
+				5265A391250FCE6C009BB8E9 /* View */,
+				5265A392250FCE6F009BB8E9 /* ViewModel */,
+			);
+			path = Screens;
+			sourceTree = "<group>";
+		};
+		5265A390250FCE67009BB8E9 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
+		5265A391250FCE6C009BB8E9 /* View */ = {
+			isa = PBXGroup;
+			children = (
 				522D85BB250FC8CB00774FC2 /* ConvertView.swift */,
 				522D85BC250FC8CB00774FC2 /* ConvertView.xib */,
 			);
-			path = Screens;
+			path = View;
+			sourceTree = "<group>";
+		};
+		5265A392250FCE6F009BB8E9 /* ViewModel */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = ViewModel;
+			sourceTree = "<group>";
+		};
+		5265A39B250FD3F7009BB8E9 /* Router */ = {
+			isa = PBXGroup;
+			children = (
+				5265A39C250FD440009BB8E9 /* Router.swift */,
+				5265A39E250FD44B009BB8E9 /* Showable.swift */,
+				5265A3A0250FD625009BB8E9 /* AppRouter.swift */,
+			);
+			path = Router;
+			sourceTree = "<group>";
+		};
+		52E01F772510751000298434 /* API */ = {
+			isa = PBXGroup;
+			children = (
+				52E01F782510752B00298434 /* RestAPI.swift */,
+			);
+			path = API;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -178,8 +231,15 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				5265A394250FCEFB009BB8E9 /* Coordinator.swift in Sources */,
 				522D85A3250FC81500774FC2 /* AppDelegate.swift in Sources */,
+				5265A39A250FD064009BB8E9 /* ConvertCoordinator.swift in Sources */,
+				5265A39D250FD440009BB8E9 /* Router.swift in Sources */,
 				522D85A5250FC81500774FC2 /* SceneDelegate.swift in Sources */,
+				5265A3A1250FD625009BB8E9 /* AppRouter.swift in Sources */,
+				52E01F792510752B00298434 /* RestAPI.swift in Sources */,
+				5265A397250FCF32009BB8E9 /* AppCoordinator.swift in Sources */,
+				5265A39F250FD44B009BB8E9 /* Showable.swift in Sources */,
 				522D85BD250FC8CB00774FC2 /* ConvertView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
