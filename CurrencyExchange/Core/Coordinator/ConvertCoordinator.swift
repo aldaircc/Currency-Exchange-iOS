@@ -19,7 +19,6 @@ class ConvertCoordinator: Coordinator {
     
     func start() {
         let convertVC = ConvertView(nibName: "ConvertView", bundle: nil)
-        convertVC.title = "Currency Exchange"
         self.presenter.pushViewController(convertVC, animated: true)
         self.convertVC = convertVC
     }

@@ -48,10 +48,12 @@ extension RestAPI{
             if let data = data {
                 do {
                     let json = try JSONSerialization.jsonObject(with: data, options: [])
-                    print("Json: \(json)")
+                    print(json)
                     
                     let decoder = JSONDecoder()
                     let decodeObject = try decoder.decode(objectType.self, from: data)
+//                    decoder.decode(objectType.self, from: )
+                    
                     completion(.success(data: decodeObject))
                 } catch (let exception) {
                     completion(.failure(error: exception))
