@@ -18,6 +18,7 @@ struct API {
         case convert = "convert"
         case timeFrame = "timeframe"
         case change = "change"
+        case countries = "countries"
     }
 }
 

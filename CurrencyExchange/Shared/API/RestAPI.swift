@@ -13,9 +13,14 @@ enum responseAPI<T>{
     case success(data: T)
 }
 
+enum HttpMethod: String{
+    case GET = "Get"
+    case POST = "Post"
+}
+
 protocol RestAPI {
     func callService<T:Decodable>(from url: String,
-                                  verb: String,
+                                  method: HttpMethod,
                                   body: Data?,
                                   header: [String: Any]?,
                                   objectType: T.Type,
@@ -25,7 +30,7 @@ protocol RestAPI {
 extension RestAPI{
     
     func callService<T:Decodable>(from url: String,
-                                  verb: String,
+                                  method: HttpMethod,
                                   body: Data? = nil,
                                   header: [String: Any]? = nil,
                                   objectType: T.Type,
@@ -35,7 +40,7 @@ extension RestAPI{
         
         var request = URLRequest(url: serviceUrl)
         request.addValue("Application/json", forHTTPHeaderField: "Content-Type")
-        request.httpMethod = verb
+        request.httpMethod = method.rawValue
         request.httpBody = body
         
         let session = URLSession.shared
@@ -48,12 +53,8 @@ extension RestAPI{
             if let data = data {
                 do {
                     let json = try JSONSerialization.jsonObject(with: data, options: [])
-                    print(json)
-                    
                     let decoder = JSONDecoder()
                     let decodeObject = try decoder.decode(objectType.self, from: data)
-//                    decoder.decode(objectType.self, from: )
-                    
                     completion(.success(data: decodeObject))
                 } catch (let exception) {
                     completion(.failure(error: exception))

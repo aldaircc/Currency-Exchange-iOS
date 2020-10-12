@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="17192" systemVersion="19H2" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
+    <entity name="Country" representedClassName="Country" syncable="YES">
+        <attribute name="id" attributeType="String"/>
+        <attribute name="name" attributeType="String"/>
+    </entity>
+    <entity name="Currency" representedClassName="Currency" syncable="YES">
+        <attribute name="currencyId" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="currencyName" optional="YES" attributeType="String"/>
+        <attribute name="currencySymbol" attributeType="String"/>
+    </entity>
+    <elements>
+        <element name="Currency" positionX="-632.875" positionY="53.2265625" width="128" height="88"/>
+        <element name="Country" positionX="-842.91796875" positionY="-6.078125" width="128" height="73"/>
+    </elements>
+</model>

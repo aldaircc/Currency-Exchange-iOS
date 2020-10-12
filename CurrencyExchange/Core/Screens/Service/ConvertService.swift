@@ -7,53 +7,75 @@
 //
 
 import Foundation
-
-struct ComplexObject: Decodable {
-    let timestamp: Int
-    let identifier: String
-}
-
-extension ComplexObject {
-    enum CodingKeysC: String, CodingKey {
-        case timestamp
-        case identifier
-    }
-}
-
-enum DecodingError: Error {
-    case corruptedData
-}
-
+import RxSwift
 
 struct ConvertService: RestAPI {
     
-    func demo() {
+    func convertCurrency(params: ConvertParams) -> Observable<CurrencyConversion>{
         
-        let json = """
-            {
-            "USD_PHP":48.485039,
-            "PHP_USD":0.020625
+        let url = API.baseURL
+            + API.EndPoints.convert.rawValue + "?q="
+            + params.fromCurrency + ","
+            + params.toCurrency + "&compact=ultra&apiKey="
+            + API.apiKey
+        
+        let observable = Observable<CurrencyConversion>.create({ observer in
+            callService(from: url,
+                        method: .GET,
+                        objectType: CurrencyConversion.self) { response in
+                switch response{
+                case .failure(let error):
+                    observer.onError(error)
+                case .success(let data):
+                    observer.onNext(data)
+                    observer.onCompleted()
+                }
             }
-            """
+            return Disposables.create()
+        })
         
-        do {
-            let data = Data(json.utf8)
-            print("\(json)")
-            
-            let decoder = JSONDecoder()
-            let decodeObject = try decoder.decode(currencyConversion.self, from: data)
-            
-            print(decodeObject)
-
-        } catch (let exception) {
-            print(exception.localizedDescription)
-        }
+        return observable
+        
+//        callService(from: url, method: .GET, objectType: CurrencyConversion.self) { (response) in
+//            switch response {
+//            case .success(let data):
+//                completion(.success(data: data))
+//            case .failure(let error):
+//                completion(.failure(error: error))
+//            }
+//        }
+        
+//        let json = """
+//            {
+//            "USD_PHP":48.485039,
+//            "PHP_USD":0.020625
+//            }
+//            """
+//
+//        do {
+//            let data = Data(json.utf8)
+//            print("\(json)")
+//
+//            let decoder = JSONDecoder()
+//            let decodeObject = try decoder.decode(currencyConversion.self, from: data)
+//
+//            print(decodeObject)
+//
+//        } catch (let exception) {
+//            print(exception.localizedDescription)
+//        }
         
     }
 }
 
+struct ConvertParams {
+    let fromCurrency: String
+    let toCurrency: String
+    let amount: Float
+}
 
-struct currencyConversion: Decodable{
+
+struct CurrencyConversion: Decodable{
     var response: [ExchangeRate]
     
     private struct DynamicCodingKeys: CodingKey{
@@ -121,10 +143,10 @@ class resultAPICountry: Codable{
         case results = "results"
     }
     
-    let results: [String: Currency]?
+    let results: [String: Currencyx]?
 }
 
-class Currency: Codable {
+class Currencyx: Codable {
     
     enum CodingKeys: String, CodingKey{
         case currencyId = "currencyId"

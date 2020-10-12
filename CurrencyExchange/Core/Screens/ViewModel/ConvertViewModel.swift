@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import RxSwift
 
 class ConvertViewModel {
     
@@ -16,8 +17,11 @@ class ConvertViewModel {
         self.service = service
     }
     
-    func getConvertCurrency(from currencyA:String, to currencyB:String, for amount: Int) {
-        self.service.demo()
+    func getConvertCurrency(currency from:String, to:String, for amount: Float) -> Observable<CurrencyConversion>{
+        let params = ConvertParams.init(fromCurrency: from,
+                                        toCurrency: to,
+                                        amount: amount)
+        return self.service.convertCurrency(params: params)
     }
     
 }

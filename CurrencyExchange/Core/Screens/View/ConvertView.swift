@@ -53,35 +53,46 @@ class ConvertView: UIViewController {
     }()
     
     //MARK:- Properties local
-    let service = ConvertService()
-    var viewModel: ConvertViewModel!
+    let convertService = ConvertService()
+    let countryService = CountryService()
+    var convertViewModel: ConvertViewModel!
+    var countryViewModel: CountryViewModel!
     let disposeBag = DisposeBag()
     let compositeDisposable = CompositeDisposable()
     
     //MARK:- LifeCycle
     override func viewDidLoad() {
         super.viewDidLoad()
-        viewModel = ConvertViewModel(service: self.service)
+        convertViewModel = ConvertViewModel(service: self.convertService)
+        countryViewModel = CountryViewModel(service: self.countryService)
         setupUI()
         setupActions()
         // Do any additional setup after loading the view.
-        let service = ConvertService()
-        service.demo()
         
-//        Observable.just(["Item 01", "Item 02", "Item 03"])
-//            .bind(to: self.currencyFromPickerView.rx.itemTitles{ _, item in
-//                return "\(item)"
-//            })
+        //        Observable.just(["Item 01", "Item 02", "Item 03"])
+        //            .bind(to: self.currencyFromPickerView.rx.itemTitles{ _, item in
+        //                return "\(item)"
+        //            })
         
-        Observable.just(["Item 1","Item 2", "etc"])
-                            .bind(to: currencyFromPickerView.rx.itemTitles) { _, item in
-                                return item
+        let elements = Observable.just(["Item 1","Item 2", "etc"])
+        let observerCountries = Observable.of(self.countryViewModel.getCountries())
+                
+        elements.bind(to: currencyFromPickerView.rx.itemTitles) { _, item in
+            return item
         }.disposed(by: disposeBag)
-
+        
+        self.currencyFromPickerView.rx.modelSelected(String.self)
+            .map { item in
+                item.first
+            }
+            .bind(to: self.titleLabel.rx.text)
+            .disposed(by: self.disposeBag)
+        
         self.currencyFromPickerView.rx.itemSelected.asObservable().subscribe(onNext: { item in
             print("Item selected \(item)")
-            }).disposed(by: disposeBag)
-
+        })
+        .disposed(by: disposeBag)
+        
         self.currencyFromPickerView.selectRow(1, inComponent: 0, animated: true)
     }
     
@@ -104,12 +115,31 @@ class ConvertView: UIViewController {
     
     func setupActions(){
         self.convertButton.rx.tap.bind {
-            self.viewModel.getConvertCurrency(from: "USD_PHP", to: "PHP_USD", for: 10)
+            //            self.viewModel.getConvertCurrency(from: "USD_PHP", to: "PHP_USD", for: 10)
+            //            self.countryViewModel.getCountries()
+            
+            self.convertViewModel.getConvertCurrency(currency: "USD_PEN",
+                                                     to: "PEN_USD",
+                                                     for: 2)
+                .observeOn(MainScheduler.asyncInstance)
+                .subscribe(onNext: { response in
+                    print("Response \(response)")
+                },
+                onError: { error in
+                    print("Error \(error.localizedDescription)")
+                },
+                onCompleted: {
+                    print("On Completed convert currency")
+                },
+                onDisposed: {
+                    print("On dispose")
+                })
+                .disposed(by: self.disposeBag)
+            
         }.disposed(by: disposeBag)
     }
     
     func clear(){
         self.compositeDisposable.dispose()
     }
-    
 }
