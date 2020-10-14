@@ -11,14 +11,14 @@ import SnapKit
 import RxSwift
 import RxCocoa
 
-class ConvertView: UIViewController {
+class ConvertView: UIViewController{
     
     //MARK:- UI Properties
     let contentStackView: UIStackView = {
         let stackView = UIStackView()
         stackView.axis = .vertical
         stackView.distribution = .equalSpacing
-        stackView.spacing = 10
+        stackView.spacing = 1
         return stackView
     }()
     
@@ -36,12 +36,24 @@ class ConvertView: UIViewController {
         return textfield
     }()
     
-    let currencyFromPickerView: UIPickerView = {
+    let fromLabel: UILabel = {
+        let label = UILabel()
+        label.text = "From"
+        return label
+    }()
+    
+    let toLabel: UILabel = {
+        let label = UILabel()
+        label.text = "To"
+        return label
+    }()
+    
+    let fromCurrencyPicker: UIPickerView = {
         let pickerView = UIPickerView()
         return pickerView
     }()
     
-    let toCurrencyPickerView: UIPickerView = {
+    let toCurrencyPicker: UIPickerView = {
         let pickerView = UIPickerView()
         return pickerView
     }()
@@ -49,6 +61,7 @@ class ConvertView: UIViewController {
     let convertButton: UIButton = {
         let button = UIButton()
         button.setTitle("Convert", for: .normal)
+        button.backgroundColor = .blue
         return button
     }()
     
@@ -60,6 +73,9 @@ class ConvertView: UIViewController {
     let disposeBag = DisposeBag()
     let compositeDisposable = CompositeDisposable()
     
+    var currencyArray = [String]()
+    var countryArray = [Country]()
+    
     //MARK:- LifeCycle
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -67,44 +83,50 @@ class ConvertView: UIViewController {
         countryViewModel = CountryViewModel(service: self.countryService)
         setupUI()
         setupActions()
-        // Do any additional setup after loading the view.
         
-        //        Observable.just(["Item 01", "Item 02", "Item 03"])
-        //            .bind(to: self.currencyFromPickerView.rx.itemTitles{ _, item in
-        //                return "\(item)"
-        //            })
         
-        let elements = Observable.just(["Item 1","Item 2", "etc"])
-        let observerCountries = Observable.of(self.countryViewModel.getCountries())
+        self.countryViewModel.getCountries().observeOn(MainScheduler.asyncInstance)
+            .subscribe(onNext: { response in
                 
-        elements.bind(to: currencyFromPickerView.rx.itemTitles) { _, item in
-            return item
-        }.disposed(by: disposeBag)
-        
-        self.currencyFromPickerView.rx.modelSelected(String.self)
-            .map { item in
-                item.first
-            }
-            .bind(to: self.titleLabel.rx.text)
+                for item in response.results{
+                    self.currencyArray.append(item.value.currencyName)
+                    self.countryArray.append(Country.init(alpha3: item.value.alpha3,
+                                                          currencyId: item.value.currencyId,
+                                                          currencyName: item.value.currencyName,
+                                                          currencySymbol: item.value.currencySymbol,
+                                                          name: item.value.name))
+                }
+                
+                Observable.just(self.currencyArray)
+                    .bind(to: self.fromCurrencyPicker.rx.itemTitles){ _, item in
+                        return "\(item)"
+                    }.disposed(by: self.disposeBag)
+                
+                Observable.just(self.currencyArray)
+                    .bind(to: self.toCurrencyPicker.rx.itemTitles){ _, item in
+                        return "\(item)"
+                    }.disposed(by: self.disposeBag)
+                
+            }, onError: { error in
+                
+            }, onCompleted: {
+                
+            }, onDisposed: {
+                
+            })
             .disposed(by: self.disposeBag)
-        
-        self.currencyFromPickerView.rx.itemSelected.asObservable().subscribe(onNext: { item in
-            print("Item selected \(item)")
-        })
-        .disposed(by: disposeBag)
-        
-        self.currencyFromPickerView.selectRow(1, inComponent: 0, animated: true)
     }
     
     //MARK:- Methods
     func setupUI(){
-        self.view.backgroundColor = .green
         self.view.addSubview(contentStackView)
         self.contentStackView.insertArrangedSubview(titleLabel, at: 0)
-        self.contentStackView.insertArrangedSubview(currencyFromPickerView, at: 1)
-        self.contentStackView.insertArrangedSubview(amountTextField, at: 2)
-        self.contentStackView.insertArrangedSubview(toCurrencyPickerView, at: 3)
-        self.contentStackView.insertArrangedSubview(convertButton, at: 4)
+        self.contentStackView.insertArrangedSubview(fromLabel, at: 1)
+        self.contentStackView.insertArrangedSubview(fromCurrencyPicker, at: 2)
+        self.contentStackView.insertArrangedSubview(amountTextField, at: 3)
+        self.contentStackView.insertArrangedSubview(toLabel, at: 4)
+        self.contentStackView.insertArrangedSubview(toCurrencyPicker, at: 5)
+        self.contentStackView.insertArrangedSubview(convertButton, at: 6)
         
         self.contentStackView.snp.makeConstraints { make in
             make.width.equalToSuperview()
@@ -114,12 +136,29 @@ class ConvertView: UIViewController {
     }
     
     func setupActions(){
+        //        self.currencyFromPickerView.dataSource = self
+        //        self.currencyFromPickerView.delegate = self
+        //        self.toCurrencyPickerView.dataSource = self
+        //        self.toCurrencyPickerView.delegate = self
+        
+        self.fromCurrencyPicker.rx.modelSelected(String.self)
+            .map{ item in
+                item.first
+            }
+            .bind(to: self.fromLabel.rx.text)
+            .disposed(by: self.disposeBag)
+        
+        self.toCurrencyPicker.rx.modelSelected(String.self)
+            .map{ item in
+                item.first
+            }
+            .bind(to: self.toLabel.rx.text)
+            .disposed(by: self.disposeBag)
+        
         self.convertButton.rx.tap.bind {
-            //            self.viewModel.getConvertCurrency(from: "USD_PHP", to: "PHP_USD", for: 10)
-            //            self.countryViewModel.getCountries()
             
-            self.convertViewModel.getConvertCurrency(currency: "USD_PEN",
-                                                     to: "PEN_USD",
+            self.convertViewModel.getConvertCurrency(currency: self.makeFormatCurrency(from: self.fromLabel.text!, to: self.toLabel.text!), // "USD_PEN",
+                                                     to: self.makeFormatCurrency(from: self.toLabel.text!, to: self.fromLabel.text!), //"PEN_USD",
                                                      for: 2)
                 .observeOn(MainScheduler.asyncInstance)
                 .subscribe(onNext: { response in
@@ -141,5 +180,32 @@ class ConvertView: UIViewController {
     
     func clear(){
         self.compositeDisposable.dispose()
+    }
+    
+    func makeFormatCurrency(from: String, to: String) -> String {
+        
+        let filter = self.countryArray.filter { $0.currencyName == from }
+        
+        return filter.description
+//        guard let fromCode = self.countryArray.filter else { return ""}
+//
+//        guard let toCode = self.countryArray[0] else { return ""}
+//
+//        return "\(fromCode)_\(toCode)"
+    }
+}
+
+extension ConvertView: UIPickerViewDataSource, UIPickerViewDelegate{
+    func numberOfComponents(in pickerView: UIPickerView) -> Int {
+        return 1
+    }
+    
+    func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
+        return self.currencyArray.count
+    }
+    
+    func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
+        let title = self.currencyArray[row]
+        return title
     }
 }

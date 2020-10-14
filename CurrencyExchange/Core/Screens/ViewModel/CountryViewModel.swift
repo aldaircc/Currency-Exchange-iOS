@@ -12,27 +12,13 @@ import RxSwift
 struct CountryViewModel {
     
     let service: CountryService
-    let countryRepository = CountryRepository(context: ContextManager.shared.viewContext)
     
     init(service: CountryService) {
         self.service = service
     }
     
     func getCountries() -> Observable<ResultCountry> {
-        
-        //        print("Country from DB")
-        //        let countries = countryRepository.getCountries()
-        //        for el in countries {
-        //            print("id: \(el.id) - name: \(el.name)")
-        //        }
-        //
-        //        return []
         return self.service.getCountries()
-    }
-    
-    func saveCountryDemo(id: String, name: String){
-        countryRepository.save(id: id,
-                               name: name)
     }
 }
 
@@ -42,10 +28,10 @@ struct ResultCountry: Codable{
         case results = "results"
     }
     
-    let results: [String: Countryx]
+    let results: [String: Country]
 }
 
-struct Countryx: Codable {
+struct Country: Codable {
     
     let alpha3: String
     let currencyId: String
@@ -53,10 +39,3 @@ struct Countryx: Codable {
     let currencySymbol: String
     let name: String
 }
-
-//"PE":{"alpha3":"PER",
-//    "currencyId":"PEN",
-//    "currencyName":"Peruvian nuevo sol",
-//    "currencySymbol":"S/.",
-//    "id":"PE",
-//    "name":"Peru"},

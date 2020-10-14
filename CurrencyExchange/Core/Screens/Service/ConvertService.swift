@@ -143,10 +143,10 @@ class resultAPICountry: Codable{
         case results = "results"
     }
     
-    let results: [String: Currencyx]?
+    let results: [String: Currency]?
 }
 
-class Currencyx: Codable {
+class Currency: Codable {
     
     enum CodingKeys: String, CodingKey{
         case currencyId = "currencyId"
