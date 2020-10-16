@@ -14,12 +14,10 @@ import RxCocoa
 class ConvertView: UIViewController{
     
     //MARK:- UI Properties
-    let contentStackView: UIStackView = {
-        let stackView = UIStackView()
-        stackView.axis = .vertical
-        stackView.distribution = .equalSpacing
-        stackView.spacing = 1
-        return stackView
+    let contentView: UIView = {
+        let contentView = UIView()
+        contentView.backgroundColor = .orange
+        return contentView
     }()
     
     let titleLabel: UILabel = {
@@ -89,10 +87,10 @@ class ConvertView: UIViewController{
             .subscribe(onNext: { response in
                 
                 for item in response.results{
-                    self.currencyArray.append(item.value.currencyName)
+                    self.currencyArray.append("\(item.value.currencyId)-\(item.value.currencyName)")
                     self.countryArray.append(Country.init(alpha3: item.value.alpha3,
                                                           currencyId: item.value.currencyId,
-                                                          currencyName: item.value.currencyName,
+                                                          currencyName: "\(item.value.currencyId)-\(item.value.currencyName)",
                                                           currencySymbol: item.value.currencySymbol,
                                                           name: item.value.name))
                 }
@@ -119,27 +117,59 @@ class ConvertView: UIViewController{
     
     //MARK:- Methods
     func setupUI(){
-        self.view.addSubview(contentStackView)
-        self.contentStackView.insertArrangedSubview(titleLabel, at: 0)
-        self.contentStackView.insertArrangedSubview(fromLabel, at: 1)
-        self.contentStackView.insertArrangedSubview(fromCurrencyPicker, at: 2)
-        self.contentStackView.insertArrangedSubview(amountTextField, at: 3)
-        self.contentStackView.insertArrangedSubview(toLabel, at: 4)
-        self.contentStackView.insertArrangedSubview(toCurrencyPicker, at: 5)
-        self.contentStackView.insertArrangedSubview(convertButton, at: 6)
+        self.view.addSubview(contentView)
+        self.contentView.addSubview(titleLabel)
+        self.contentView.addSubview(fromLabel)
+        self.contentView.addSubview(fromCurrencyPicker)
+        self.contentView.addSubview(amountTextField)
+        self.contentView.addSubview(toLabel)
+        self.contentView.addSubview(toCurrencyPicker)
+        self.contentView.addSubview(convertButton)
         
-        self.contentStackView.snp.makeConstraints { make in
+        self.contentView.snp.makeConstraints { make in
+            make.height.equalToSuperview()
             make.width.equalToSuperview()
-            make.top.equalToSuperview().offset(10.0)
-            make.bottom.equalToSuperview().offset(-20.0)
         }
+        
+        self.convertButton.snp.makeConstraints { make in
+            make.leading.equalToSuperview().offset(10.0)
+            make.trailing.equalToSuperview().offset(-10.0)
+            make.bottom.equalTo(self.contentView.snp.bottom).offset(-10.0)
+        }
+        self.amountTextField.snp.makeConstraints { make in
+            make.width.equalToSuperview()
+            make.bottom.equalTo(self.convertButton.snp.top).offset(-10.0)
+        }
+        self.toCurrencyPicker.snp.makeConstraints { make in
+            make.width.equalToSuperview()
+            make.height.equalTo(120.0)
+            make.bottom.equalTo(self.amountTextField.snp.top).offset(-5.0)
+        }
+        
+        self.toLabel.snp.makeConstraints { make in
+            make.width.equalToSuperview()
+            make.bottom.equalTo(self.toCurrencyPicker.snp.top).offset(-10.0)
+        }
+        
+        self.fromCurrencyPicker.snp.makeConstraints { make in
+            make.width.equalToSuperview()
+            make.height.equalTo(120.0)
+            make.bottom.equalTo(self.toLabel.snp.top).offset(-10.0)
+        }
+        
+        self.fromLabel.snp.makeConstraints { make in
+            make.width.equalToSuperview()
+            make.bottom.equalTo(self.fromCurrencyPicker.snp.top).offset(-10.0)
+        }
+        
+        self.titleLabel.snp.makeConstraints { make in
+            make.width.equalToSuperview()
+            make.bottom.equalTo(self.fromLabel.snp.top)
+        }
+        
     }
     
     func setupActions(){
-        //        self.currencyFromPickerView.dataSource = self
-        //        self.currencyFromPickerView.delegate = self
-        //        self.toCurrencyPickerView.dataSource = self
-        //        self.toCurrencyPickerView.delegate = self
         
         self.fromCurrencyPicker.rx.modelSelected(String.self)
             .map{ item in
@@ -183,15 +213,10 @@ class ConvertView: UIViewController{
     }
     
     func makeFormatCurrency(from: String, to: String) -> String {
-        
-        let filter = self.countryArray.filter { $0.currencyName == from }
-        
-        return filter.description
-//        guard let fromCode = self.countryArray.filter else { return ""}
-//
-//        guard let toCode = self.countryArray[0] else { return ""}
-//
-//        return "\(fromCode)_\(toCode)"
+        let fromCode = self.countryArray.filter { $0.currencyName == from }
+        let toCode = self.countryArray.filter { $0.currencyName == to}
+        guard fromCode != nil, toCode != nil else {return ""}
+        return "\(fromCode.first!.currencyId)_\(toCode.first!.currencyId)"
     }
 }
 

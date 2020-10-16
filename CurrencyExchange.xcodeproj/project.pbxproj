@@ -19,7 +19,6 @@
 		5265A39A250FD064009BB8E9 /* ConvertCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5265A399250FD064009BB8E9 /* ConvertCoordinator.swift */; };
 		5265A39D250FD440009BB8E9 /* Router.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5265A39C250FD440009BB8E9 /* Router.swift */; };
 		5265A3A1250FD625009BB8E9 /* AppRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5265A3A0250FD625009BB8E9 /* AppRouter.swift */; };
-		526D33922522CF90003352F3 /* ContextManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 526D33912522CF90003352F3 /* ContextManager.swift */; };
 		5286FB5E251FA2CC0060384D /* RxSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 5286FB5D251FA2CC0060384D /* RxSwift */; };
 		5286FB60251FA2CC0060384D /* RxCocoa in Frameworks */ = {isa = PBXBuildFile; productRef = 5286FB5F251FA2CC0060384D /* RxCocoa */; };
 		5286FB63251FA2F20060384D /* SnapKit in Frameworks */ = {isa = PBXBuildFile; productRef = 5286FB62251FA2F20060384D /* SnapKit */; };
@@ -61,7 +60,6 @@
 		5265A399250FD064009BB8E9 /* ConvertCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConvertCoordinator.swift; sourceTree = "<group>"; };
 		5265A39C250FD440009BB8E9 /* Router.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Router.swift; sourceTree = "<group>"; };
 		5265A3A0250FD625009BB8E9 /* AppRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppRouter.swift; sourceTree = "<group>"; };
-		526D33912522CF90003352F3 /* ContextManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContextManager.swift; sourceTree = "<group>"; };
 		5286FB65251FBC7F0060384D /* CountryViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CountryViewModel.swift; sourceTree = "<group>"; };
 		5286FB67251FBCE50060384D /* CountryService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CountryService.swift; sourceTree = "<group>"; };
 		528C6F01251F9D7700D8BE1B /* Showable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Showable.swift; sourceTree = "<group>"; };
@@ -117,7 +115,6 @@
 			children = (
 				522D85A2250FC81500774FC2 /* AppDelegate.swift */,
 				522D85A4250FC81500774FC2 /* SceneDelegate.swift */,
-				526D33902522CD45003352F3 /* AppManager */,
 				522D85B6250FC86200774FC2 /* Shared */,
 				522D85B7250FC86500774FC2 /* Core */,
 				52E01F7D25107A0100298434 /* Resources */,
@@ -193,14 +190,6 @@
 				528C6F01251F9D7700D8BE1B /* Showable.swift */,
 			);
 			path = Router;
-			sourceTree = "<group>";
-		};
-		526D33902522CD45003352F3 /* AppManager */ = {
-			isa = PBXGroup;
-			children = (
-				526D33912522CF90003352F3 /* ContextManager.swift */,
-			);
-			path = AppManager;
 			sourceTree = "<group>";
 		};
 		5286FB64251FB1980060384D /* Model */ = {
@@ -334,7 +323,6 @@
 				5286FB68251FBCE50060384D /* CountryService.swift in Sources */,
 				5216A37925367B4A00AA980E /* FactoryComponent.swift in Sources */,
 				5265A39D250FD440009BB8E9 /* Router.swift in Sources */,
-				526D33922522CF90003352F3 /* ContextManager.swift in Sources */,
 				522D85A5250FC81500774FC2 /* SceneDelegate.swift in Sources */,
 				5265A3A1250FD625009BB8E9 /* AppRouter.swift in Sources */,
 				52E01F792510752B00298434 /* RestAPI.swift in Sources */,

@@ -50,7 +50,7 @@ extension RestAPI{
                 completion(.failure(error: error))
             }
             
-            if let data = data {
+            if let data = data {     
                 do {
                     let json = try JSONSerialization.jsonObject(with: data, options: [])
                     let decoder = JSONDecoder()
